@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login e Cadastro - +KNOWLEDGE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #f8fafc; }
+        .loader { border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-4">
+
+    <div class="w-full max-w-md">
+        <a href="Homepage +knowledge.html" class="block mx-auto mb-8 text-3xl font-bold text-center text-blue-600">+KNOWLEDGE</a>
+
+        <div id="status-container" class="hidden mb-6 p-4 bg-white border border-gray-200 rounded-lg text-center shadow-lg">
+            <div id="loader" class="loader mx-auto"></div>
+            <p id="status-info" class="mt-4 text-gray-700 font-medium">A autenticar...</p>
+        </div>
+
+        <div id="forms-container" class="bg-white p-8 rounded-xl shadow-lg">
+            <!-- Formulário de Login -->
+            <form id="login-form">
+                <h2 class="text-2xl font-bold text-gray-800 text-center mb-1">Bem-vindo de volta!</h2>
+                <p class="text-center text-gray-500 mb-6">Faça login para continuar.</p>
+                <div class="mb-4">
+                    <label for="login-email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                    <input type="email" id="login-email" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div class="mb-6">
+                    <label for="login-password" class="block text-sm font-medium text-gray-700 mb-1">Senha</label>
+                    <input type="password" id="login-password" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <button type="submit" class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300 font-semibold">
+                    Entrar
+                </button>
+                <p class="text-center text-sm text-gray-600 mt-6">
+                    Não tem uma conta? <a href="#" id="show-register" class="font-medium text-blue-600 hover:underline">Registe-se</a>
+                </p>
+            </form>
+
+            <!-- Formulário de Registo (escondido por padrão) -->
+            <form id="register-form" class="hidden">
+                <h2 class="text-2xl font-bold text-gray-800 text-center mb-1">Crie a sua Conta</h2>
+                <p class="text-center text-gray-500 mb-6">É rápido e fácil.</p>
+                <div class="mb-4">
+                    <label for="register-email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                    <input type="email" id="register-email" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div class="mb-6">
+                    <label for="register-password" class="block text-sm font-medium text-gray-700 mb-1">Senha</label>
+                    <input type="password" id="register-password" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <button type="submit" class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300 font-semibold">
+                    Criar Conta
+                </button>
+                <p class="text-center text-sm text-gray-600 mt-6">
+                    Já tem uma conta? <a href="#" id="show-login" class="font-medium text-blue-600 hover:underline">Faça login</a>
+                </p>
+            </form>
+
+            <div id="error-message" class="mt-4 p-3 bg-red-100 border border-red-200 text-red-800 rounded-lg text-center hidden"></div>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { 
+            getAuth, 
+            createUserWithEmailAndPassword, 
+            signInWithEmailAndPassword, 
+            onAuthStateChanged,
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+
+        // ==============================================================================
+        //     CHAVES DO SEU PROJETO FIREBASE (ATUALIZADAS!)
+        // ==============================================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyA72HqybxvE2f4civTn0IoPnf9z330dZHw",
+            authDomain: "plusknowledge-2df65.firebaseapp.com",
+            projectId: "plusknowledge-2df65",
+            storageBucket: "plusknowledge-2df65.appspot.com",
+            messagingSenderId: "936711306750",
+            appId: "1:936711306750:web:fd6947a7e3bbdf5faa94f",
+            measurementId: "G-Z0J6P2BK7V"
+        };
+        // ==============================================================================
+        
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Referências aos elementos do DOM
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const showRegisterLink = document.getElementById('show-register');
+        const showLoginLink = document.getElementById('show-login');
+        const formsContainer = document.getElementById('forms-container');
+        const statusContainer = document.getElementById('status-container');
+        const statusInfo = document.getElementById('status-info');
+        const errorMessageDiv = document.getElementById('error-message');
+
+        // Funções auxiliares
+        const toggleForms = (showRegister) => {
+            if (showRegister) {
+                loginForm.classList.add('hidden');
+                registerForm.classList.remove('hidden');
+            } else {
+                loginForm.classList.remove('hidden');
+                registerForm.classList.add('hidden');
+            }
+            errorMessageDiv.classList.add('hidden');
+        };
+
+        const showErrorMessage = (message) => {
+            errorMessageDiv.textContent = message;
+            errorMessageDiv.classList.remove('hidden');
+            formsContainer.classList.remove('hidden');
+            statusContainer.classList.add('hidden');
+        };
+        
+        const showLoading = (message) => {
+            formsContainer.classList.add('hidden');
+            statusContainer.classList.remove('hidden');
+            statusInfo.textContent = message;
+            errorMessageDiv.classList.add('hidden');
+        };
+
+        const redirectToHome = (message) => {
+            if (document.body.dataset.redirecting === 'true') return;
+            document.body.dataset.redirecting = 'true';
+            showLoading(message);
+            setTimeout(() => {
+                window.location.href = 'Homepage +knowledge.html'; 
+            }, 1500);
+        };
+
+        // Lógica de autenticação
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            showLoading('A criar a sua conta...');
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+            try {
+                await createUserWithEmailAndPassword(auth, email, password);
+            } catch (error) {
+                console.error('Erro no registo:', error.code, error.message);
+                if (error.code === 'auth/email-already-in-use') {
+                    showErrorMessage('Este email já está em uso.');
+                } else if (error.code === 'auth/weak-password') {
+                    showErrorMessage('A senha deve ter pelo menos 6 caracteres.');
+                } else {
+                    showErrorMessage('Erro ao registar. Verifique as suas chaves Firebase.');
+                }
+            }
+        });
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            showLoading('A entrar...');
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+            } catch (error) {
+                console.error('Erro no login:', error.code, error.message);
+                if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
+                    showErrorMessage('Email ou senha inválidos.');
+                } else {
+                    showErrorMessage('Erro ao fazer login. Verifique as suas chaves Firebase.');
+                }
+            }
+        });
+
+        // Observador de autenticação
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                redirectToHome('Login bem-sucedido! A redirecionar...');
+            } else {
+                document.body.dataset.redirecting = 'false';
+                formsContainer.classList.remove('hidden');
+                statusContainer.classList.add('hidden');
+                toggleForms(false);
+            }
+        });
+
+        // Event Listeners da UI
+        showRegisterLink.addEventListener('click', (e) => { e.preventDefault(); toggleForms(true); });
+        showLoginLink.addEventListener('click', (e) => { e.preventDefault(); toggleForms(false); });
+
+    </script>
+</body>
+</html>

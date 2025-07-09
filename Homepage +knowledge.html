@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>+KNOWLEDGE - Marketplace de Cursos e Ebooks</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Configuração do Tailwind para usar a fonte Inter -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <!-- Estilos personalizados -->
+    <style>
+        html { scroll-behavior: smooth; }
+        body { background-color: #f8fafc; }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- =================================================== -->
+    <!-- CABEÇALHO (HEADER) -->
+    <!-- =================================================== -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <!-- Logo -->
+            <a href="Homepage +knowledge.html" class="text-2xl font-bold text-blue-600">+KNOWLEDGE</a>
+
+            <!-- Links de Navegação (Desktop) -->
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="#cursos" class="text-gray-600 hover:text-blue-600 transition duration-300">Cursos</a>
+                <a href="#ebooks" class="text-gray-600 hover:text-blue-600 transition duration-300">Ebooks</a>
+                <a href="#categorias" class="text-gray-600 hover:text-blue-600 transition duration-300">Categorias</a>
+            </div>
+
+            <!-- Botões de Ação (Vão mudar com base no status de login) -->
+            <div id="action-buttons" class="flex items-center space-x-4">
+                <!-- Links para login/registo (utilizador deslogado) -->
+                <div id="logged-out-view">
+                    <a href="login_page_html.html" class="hidden sm:block text-gray-600 hover:text-blue-600 transition duration-300">Login</a>
+                    <a href="login_page_html.html" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">Registe-se</a>
+                </div>
+                <!-- Informações do utilizador (utilizador logado) -->
+                <div id="logged-in-view" class="hidden items-center space-x-4">
+                    <span id="user-email" class="text-sm text-gray-600"></span>
+                    
+                    <!-- NOVO: Link para o Dashboard -->
+                    <a href="http://localhost:8501" target="_blank" class="text-sm font-medium text-blue-600 hover:underline">
+                        Meu Dashboard
+                    </a>
+                    
+                    <button id="logout-button" class="bg-red-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-red-600 transition duration-300">Sair</button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- =================================================== -->
+    <!-- SEÇÃO PRINCIPAL (HERO) -->
+    <!-- =================================================== -->
+    <main class="container mx-auto px-6 py-16 md:py-24 text-center">
+        <h1 class="text-4xl md:text-6xl font-bold text-gray-900 leading-tight">
+            Expanda o seu Conhecimento.
+        </h1>
+        <h2 class="text-4xl md:text-6xl font-bold text-blue-600 leading-tight mt-2">
+            A Qualquer Hora, em Qualquer Lugar.
+        </h2>
+        <p class="mt-6 text-lg text-gray-600 max-w-2xl mx-auto">
+            Encontre os melhores cursos, ebooks e materiais informativos para impulsionar a sua carreira e os seus hobbies. Comece a aprender hoje mesmo!
+        </p>
+        <div class="mt-8">
+            <a href="#cursos" class="bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-700 transition duration-300">
+                Explorar Cursos
+            </a>
+        </div>
+    </main>
+
+    <!-- =================================================== -->
+    <!-- SEÇÃO DE CURSOS EM DESTAQUE -->
+    <!-- =================================================== -->
+    <section id="cursos" class="bg-white py-16 md:py-24">
+        <div class="container mx-auto px-6">
+            <h3 class="text-3xl font-bold text-center text-gray-900 mb-12">Cursos em Destaque</h3>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Card de Produto 1 (Link para a página de detalhes) -->
+                <a href="produto-xadrez.html" class="block rounded-lg shadow-md overflow-hidden transform hover:-translate-y-2 transition duration-300 group">
+                    <div class="bg-gray-50">
+                        <img src="https://placehold.co/600x400/3b82f6/ffffff?text=Xadrez" alt="Imagem do curso de xadrez" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <span class="text-sm text-blue-500 font-semibold">Estratégia</span>
+                            <h4 class="text-xl font-bold text-gray-900 mt-2">Xadrez para Iniciantes</h4>
+                            <p class="text-gray-600 mt-2">Por: Mestre Anónimo</p>
+                            <div class="mt-4 flex justify-between items-center">
+                                <span class="text-2xl font-bold text-blue-600">R$ 49,90</span>
+                                <span class="bg-blue-100 text-blue-700 px-4 py-2 rounded-lg font-semibold group-hover:bg-blue-200 transition duration-300">Ver Detalhes</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Card de Produto 2 (Link para a página de detalhes) -->
+                <a href="produto-ingles.html" class="block rounded-lg shadow-md overflow-hidden transform hover:-translate-y-2 transition duration-300 group">
+                    <div class="bg-gray-50">
+                        <img src="https://placehold.co/600x400/10b981/ffffff?text=Inglês" alt="Imagem do curso de inglês" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <span class="text-sm text-emerald-500 font-semibold">Idiomas</span>
+                            <h4 class="text-xl font-bold text-gray-900 mt-2">Inglês Básico para Conversação</h4>
+                            <p class="text-gray-600 mt-2">Por: Prof. Jane Doe</p>
+                            <div class="mt-4 flex justify-between items-center">
+                                <span class="text-2xl font-bold text-emerald-600">Grátis</span>
+                                <span class="bg-emerald-100 text-emerald-700 px-4 py-2 rounded-lg font-semibold group-hover:bg-emerald-200 transition duration-300">Ver Detalhes</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Card de Produto 3 (Link para a página de detalhes) -->
+                <a href="produto-software.html" class="block rounded-lg shadow-md overflow-hidden transform hover:-translate-y-2 transition duration-300 group">
+                    <div class="bg-gray-50">
+                        <img src="https://placehold.co/600x400/8b5cf6/ffffff?text=Software" alt="Imagem do curso de software" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <span class="text-sm text-violet-500 font-semibold">Tecnologia</span>
+                            <h4 class="text-xl font-bold text-gray-900 mt-2">Desenvolvimento Web Moderno</h4>
+                            <p class="text-gray-600 mt-2">Por: Dev Sénior</p>
+                            <div class="mt-4 flex justify-between items-center">
+                                <span class="text-2xl font-bold text-violet-600">R$ 199,90</span>
+                                <span class="bg-violet-100 text-violet-700 px-4 py-2 rounded-lg font-semibold group-hover:bg-violet-200 transition duration-300">Ver Detalhes</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- =================================================== -->
+    <!-- RODAPÉ (FOOTER) -->
+    <!-- =================================================== -->
+    <footer class="bg-gray-800 text-white">
+        <div class="container mx-auto px-6 py-12 text-center">
+            <p>&copy; 2025 +KNOWLEDGE. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Firebase SDKs e Script de Autenticação -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { 
+            getAuth, 
+            onAuthStateChanged,
+            signOut
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+
+        // ==============================================================================
+        //     CHAVES DO SEU PROJETO FIREBASE
+        // ==============================================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyA72HqybxvE2f4civTn0IoPnf9z330dZHw",
+            authDomain: "plusknowledge-2df65.firebaseapp.com",
+            projectId: "plusknowledge-2df65",
+            storageBucket: "plusknowledge-2df65.appspot.com",
+            messagingSenderId: "936711306750",
+            appId: "1:936711306750:web:fd6947a7e3bbdf5faa94f",
+            measurementId: "G-Z0J6P2BK7V"
+        };
+        // ==============================================================================
+        
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Elementos da UI
+        const loggedOutView = document.getElementById('logged-out-view');
+        const loggedInView = document.getElementById('logged-in-view');
+        const userEmailSpan = document.getElementById('user-email');
+        const logoutButton = document.getElementById('logout-button');
+
+        // Observador do estado de autenticação
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // Utilizador está logado
+                loggedOutView.classList.add('hidden');
+                loggedInView.classList.remove('hidden');
+                loggedInView.classList.add('flex');
+                userEmailSpan.textContent = user.email;
+            } else {
+                // Utilizador está deslogado
+                loggedOutView.classList.remove('hidden');
+                loggedInView.classList.add('hidden');
+            }
+        });
+
+        // Evento de clique no botão de logout
+        if (logoutButton) {
+            logoutButton.addEventListener('click', () => {
+                signOut(auth).catch((error) => {
+                    console.error('Erro ao sair:', error);
+                });
+            });
+        }
+    </script>
+</body>
+</html>

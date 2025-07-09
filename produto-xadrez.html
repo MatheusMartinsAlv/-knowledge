@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xadrez para Iniciantes - +KNOWLEDGE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-blue-600 flex items-center justify-center min-h-screen p-4">
+
+    <main class="bg-white/10 backdrop-blur-lg rounded-2xl p-8 max-w-2xl w-full text-white shadow-2xl">
+        <img src="https://placehold.co/600x400/ffffff/3b82f6?text=Xadrez" alt="Imagem do curso de xadrez" class="rounded-xl w-full h-64 object-cover mb-8 shadow-lg">
+        
+        <div class="text-center">
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-4">Xadrez para Iniciantes</h1>
+            
+            <p class="text-lg text-blue-100 mb-8 max-w-lg mx-auto">
+                Domine as regras, aberturas e táticas fundamentais do xadrez. Transforme-se num jogador confiante e estratégico.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4">
+                <button class="w-full sm:w-3/4 bg-white text-blue-600 font-bold text-xl py-4 rounded-xl hover:bg-blue-100 transition duration-300 transform hover:scale-105">
+                    Comprar por R$ 49,90
+                </button>
+                <!-- Botão de Favoritar -->
+                <button id="favorite-button" class="w-full sm:w-1/4 bg-white/20 border border-white/30 text-white font-bold text-xl p-4 rounded-xl hover:bg-white/30 transition duration-300 flex items-center justify-center">
+                    <svg id="heart-icon" class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 016.364 0L12 7.5l1.318-1.182a4.5 4.5 0 116.364 6.364L12 21l-7.682-7.682a4.5 4.5 0 010-6.364z"></path></svg>
+                </button>
+            </div>
+            <div id="auth-message" class="text-blue-200 mt-4 text-sm hidden">Para guardar nos favoritos, precisa de <a href="login_page_html.html" class="font-bold underline">iniciar sessão</a>.</div>
+
+            <a href="Homepage +knowledge.html" class="inline-block mt-8 text-blue-200 hover:text-white transition duration-300">&larr; Voltar para a loja</a>
+        </div>
+    </main>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        // Importações do Firebase Auth e Firestore
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // ==============================================================================
+        //     CHAVES DO SEU PROJETO FIREBASE
+        // ==============================================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyA72HqybxvE2f4civTn0IoPnf9z330dZHw",
+            authDomain: "plusknowledge-2df65.firebaseapp.com",
+            projectId: "plusknowledge-2df65",
+            storageBucket: "plusknowledge-2df65.appspot.com",
+            messagingSenderId: "936711306750",
+            appId: "1:936711306750:web:fd6947a7e3bbdf5faa94f",
+            measurementId: "G-Z0J6P2BK7V"
+        };
+        
+        // Inicializar Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app); // Inicializar Firestore
+
+        // Detalhes do produto
+        const productId = "xadrez-iniciante-01";
+        const productDetails = {
+            name: "Xadrez para Iniciantes",
+            price: "R$ 49,90"
+        };
+
+        // Elementos da UI
+        const favoriteButton = document.getElementById('favorite-button');
+        const heartIcon = document.getElementById('heart-icon');
+        const authMessage = document.getElementById('auth-message');
+
+        let userId = null;
+        let isFavorited = false;
+
+        // Função para atualizar a aparência do botão
+        const updateButtonState = () => {
+            if (isFavorited) {
+                heartIcon.setAttribute('fill', 'currentColor');
+                favoriteButton.classList.add('bg-rose-500', 'border-rose-500');
+            } else {
+                heartIcon.setAttribute('fill', 'none');
+                favoriteButton.classList.remove('bg-rose-500', 'border-rose-500');
+            }
+        };
+
+        // Verificar o estado de autenticação
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                // Utilizador está logado
+                userId = user.uid;
+                authMessage.classList.add('hidden');
+                favoriteButton.disabled = false;
+
+                // Verificar se o produto já está nos favoritos
+                const favDocRef = doc(db, "users", userId, "favorites", productId);
+                const docSnap = await getDoc(favDocRef);
+                if (docSnap.exists()) {
+                    isFavorited = true;
+                } else {
+                    isFavorited = false;
+                }
+                updateButtonState();
+
+            } else {
+                // Utilizador está deslogado
+                userId = null;
+                authMessage.classList.remove('hidden');
+                favoriteButton.disabled = true;
+            }
+        });
+
+        // Evento de clique no botão de favoritar
+        favoriteButton.addEventListener('click', async () => {
+            if (!userId) {
+                console.log("Utilizador não está logado.");
+                return;
+            }
+
+            const favDocRef = doc(db, "users", userId, "favorites", productId);
+
+            if (isFavorited) {
+                // Remover dos favoritos
+                await deleteDoc(favDocRef);
+                isFavorited = false;
+                console.log("Produto removido dos favoritos!");
+            } else {
+                // Adicionar aos favoritos
+                await setDoc(favDocRef, productDetails);
+                isFavorited = true;
+                console.log("Produto adicionado aos favoritos!");
+            }
+            updateButtonState();
+        });
+
+    </script>
+</body>
+</html>
