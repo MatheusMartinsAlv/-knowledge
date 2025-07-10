@@ -10,7 +10,7 @@ st.set_page_config(layout="wide", page_title="+KNOWLEDGE - Dashboard de Vendas")
 st.title("📊 Dashboard de Análise de Vendas")
 st.markdown("Bem-vindo ao seu painel de controlo. Aqui pode analisar a performance dos seus produtos.")
 
-# --- Simulação de Dados (num projeto real, viriam da API Django) ---
+# --- Simulação de Dados ---
 dados = {
     'Produto': [
         'Xadrez para Iniciantes', 'Desenvolvimento Web Moderno', 'Inglês Básico', 'Xadrez para Iniciantes',
