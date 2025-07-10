@@ -72,7 +72,7 @@
     </header>
 
     <!-- =================================================== -->
-    <!-- SEÇÃO PRINCIPAL (HERO) -->
+    <!-- (HERO) -->
     <!-- =================================================== -->
     <main class="container mx-auto px-6 py-16 md:py-24 text-center">
         <h1 class="text-4xl md:text-6xl font-bold text-gray-900 leading-tight">
@@ -171,7 +171,7 @@
         } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 
         // ==============================================================================
-        //     CHAVES DO SEU PROJETO FIREBASE
+        //     CHAVES FIREBASE
         // ==============================================================================
         const firebaseConfig = {
             apiKey: "AIzaSyA72HqybxvE2f4civTn0IoPnf9z330dZHw",
@@ -202,7 +202,7 @@
                 loggedInView.classList.add('flex');
                 userEmailSpan.textContent = user.email;
             } else {
-                // Utilizador está deslogado
+                // Utilizador deslogado
                 loggedOutView.classList.remove('hidden');
                 loggedInView.classList.add('hidden');
             }
