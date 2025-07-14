@@ -8,7 +8,7 @@ import numpy as np
 st.set_page_config(layout="wide", page_title="+KNOWLEDGE - Dashboard de Vendas")
 
 st.title("📊 Dashboard de Análise de Vendas")
-st.markdown("Bem-vindo ao seu painel de controlo. Aqui pode analisar a performance dos seus produtos.")
+st.markdown("Bem-vindo ao seu painel de controle. Aqui pode analisar a performance dos seus produtos.")
 
 # --- Simulação de Dados ---
 dados = {
